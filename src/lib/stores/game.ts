@@ -21,7 +21,6 @@ export type GameState = {
 };
 
 const STORAGE_KEY = 'ai-or-real:game';
-const DEFAULT_ROUNDS = 10;
 
 const initialState = (): GameState => ({
 	status: 'idle',
@@ -104,15 +103,19 @@ const shuffle = <T>(input: T[]): T[] => {
 	return array;
 };
 
-const buildQueue = (rounds: number): ImageEntry[] => {
+const buildQueue = (rounds?: number): ImageEntry[] => {
 	const pool = shuffle(IMAGE_POOL);
+	// Wenn keine Rundenanzahl angegeben, verwende alle verfügbaren Bilder
+	if (rounds === undefined) {
+		return pool;
+	}
 	const amount = Math.min(rounds, pool.length);
 	return pool.slice(0, amount);
 };
 
 const gameStore = {
 	subscribe: store.subscribe,
-	start(rounds: number = DEFAULT_ROUNDS) {
+	start(rounds?: number) {
 		const queue = buildQueue(rounds);
 		store.set({
 			status: 'active',
