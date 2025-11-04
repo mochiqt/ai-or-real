@@ -36,11 +36,11 @@
 	<div class="flex flex-col items-center justify-center w-full h-full overflow-hidden">
 		<section class="hero text-center">
 			<h1>AI or Real?</h1>
-			<p class="lead text-lg sm:text-xl mb-8">
+			<p class="lead text-lg sm:text-xl mb-16">
 				Kannst du echte Fotos von KI-generierten Bildern unterscheiden?
 			</p>
 			
-			<div class="flex justify-center">
+			<div class="flex justify-center mt-8 sm:mt-10">
 				<button class="primary text-lg px-8 py-4" onclick={startGame}>
 					🚀 Jetzt spielen
 				</button>
@@ -60,7 +60,7 @@
 			<p class="text-slate-400 mt-1 text-xs">Bestenliste</p>
 		</div>
 
-		<div class="scoreboard w-full overflow-x-hidden !p-4 max-w-md mx-auto lg:mx-0 lg:ml-auto h-auto">
+		<div class="scoreboard w-full overflow-x-hidden !p-4 max-w-md mx-auto h-auto">
 			{#if $highscores.length === 0}
 				<div class="py-4 text-center">
 					<p class="text-slate-400 text-xs">
@@ -69,7 +69,7 @@
 				</div>
 			{:else}
 				<ol class="space-y-1">
-					{#each $highscores as entry, index}
+					{#each $highscores as entry, index (index)}
 						<li class="group">
 							<div class="flex items-center justify-start gap-2">
 								<div class="flex items-center gap-1.5 flex-1 min-w-0">
