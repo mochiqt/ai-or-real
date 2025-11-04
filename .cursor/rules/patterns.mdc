@@ -1,0 +1,84 @@
+# Code Patterns & Best Practices
+
+## State Management Patterns
+
+### Store Pattern
+- Create custom store objects that wrap writable stores
+- Expose `subscribe` method and custom methods
+- Use `get()` from `svelte/store` to read current value without subscribing
+- Avoid subscribe/unsubscribe pattern for one-time reads
+
+### Storage Persistence
+- Subscribe to store changes and persist to localStorage/sessionStorage
+- Load from storage on module initialization
+- Validate loaded data with type guards
+- Return safe defaults on validation failure
+
+## Component Patterns
+
+### Reactive Statements
+- Use `$derived()` for computed values that depend on stores
+- Use `$effect()` for side effects (navigation, logging)
+- Avoid `$:` reactive statements (Svelte 5 runes mode)
+
+### Event Handling
+- Define handlers as functions: `const handleSubmit = () => { ... }`
+- Use inline handlers for simple cases: `onclick={() => doSomething()}`
+- Pass handlers to child components via props
+
+### Conditional Rendering
+- Use `{#if}` blocks for conditional content
+- Use `{:else}` and `{:else if}` for alternatives
+- Keep conditions readable and simple
+
+## Data Validation
+
+### Type Guards
+- Create type guard functions for validating unknown data
+- Validate all required properties
+- Return false on any validation failure
+- Use with `Array.filter()` and `Array.every()`
+
+### Storage Validation
+- Always validate data loaded from localStorage/sessionStorage
+- Use type guards to ensure type safety
+- Return safe defaults (empty arrays, initial state) on failure
+- Log warnings for debugging but don't break the app
+
+## Array Operations
+
+### Iteration
+- Use `Array.map()` for transformations
+- Use `Array.filter()` with type guards for filtering
+- Use `Array.every()` for validation
+- Use `Array.sort()` for sorting with custom comparators
+
+### Immutability
+- Create new arrays instead of mutating: `[...array, newItem]`
+- Use spread operator for array operations
+- Return new arrays from functions
+
+## Utility Functions
+
+### Pure Functions
+- Prefer pure functions without side effects
+- Make functions reusable with generics
+- Keep functions focused and single-purpose
+
+### Helper Functions
+- Extract complex logic into helper functions
+- Keep helpers small and testable
+- Document complex algorithms with clear names
+
+## Error Handling
+
+### Graceful Degradation
+- Return safe defaults on errors
+- Log warnings for debugging
+- Don't break the app on recoverable errors
+- Use try/catch for JSON parsing and storage operations
+
+### User Feedback
+- Show feedback messages for user actions
+- Use conditional rendering for success/error states
+- Keep error messages user-friendly

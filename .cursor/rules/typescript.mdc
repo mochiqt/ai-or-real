@@ -1,0 +1,51 @@
+# TypeScript Conventions
+
+## Type Safety
+- Use **strict mode** (enabled in tsconfig.json)
+- Always provide explicit type annotations for function parameters and return types
+- Use type guards for runtime validation of unknown data
+- Avoid `as any` casts - use proper type guards instead
+
+## Type Definitions
+
+### Type Guards
+- Create type guard functions for validating unknown data
+- Use `is` type predicates: `(value: unknown): value is Type`
+- Validate all properties before returning true
+
+Example:
+```typescript
+const isImageEntry = (value: unknown): value is ImageEntry =>
+	typeof value === 'object' &&
+	value !== null &&
+	typeof (value as ImageEntry).src === 'string' &&
+	(value as ImageEntry).label !== undefined;
+```
+
+### Type Exports
+- Export types from modules: `export type MyType = { ... }`
+- Use `type` keyword in imports when importing types: `import { type GameState } from '...'`
+
+### Union Types
+- Prefer string literal unions for fixed sets: `type Status = 'idle' | 'active' | 'finished'`
+- Use union types with `undefined` for optional properties: `startedAt?: string`
+
+## Type Patterns
+
+### Object Types
+- Use interfaces for extensible shapes
+- Use type aliases for unions, intersections, and simple objects
+- Prefer type aliases for component props and store states
+
+### Generic Functions
+- Use generics for reusable utility functions
+- Example: `const shuffle = <T>(input: T[]): T[] => { ... }`
+
+### Pick and Omit
+- Use `Pick` and `Omit` utility types when needed
+- Example: `Pick<GameState, 'score' | 'totalRounds'>`
+
+## Error Handling
+- Validate types before using them
+- Return safe defaults on validation failure
+- Use console.warn for recoverable errors (not console.error)

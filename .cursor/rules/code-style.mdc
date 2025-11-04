@@ -1,0 +1,74 @@
+# Code Style & Formatting
+
+## Formatting Rules
+- **Indentation**: Use tabs (not spaces)
+- **Quotes**: Single quotes for strings
+- **Trailing commas**: None
+- **Print width**: 100 characters
+- **Semicolons**: As needed by Prettier
+
+## File Formatting
+- Run `pnpm format` before committing
+- Prettier config is in `.prettierrc`
+- Tailwind CSS classes are auto-sorted by Prettier
+
+## Naming Conventions
+
+### Variables and Functions
+- Use camelCase: `currentIndex`, `handleSubmit`
+- Use descriptive names: `isImageEntry` not `isImg`
+- Prefix boolean variables/guards with `is` or `has`: `isValid`, `hasImages`
+
+### Constants
+- Use UPPER_SNAKE_CASE for module-level constants: `STORAGE_KEY`, `DEFAULT_ROUNDS`
+- Use camelCase for const variables: `const currentState = ...`
+
+### Types
+- Use PascalCase: `GameState`, `ImageEntry`, `ResultSnapshot`
+- Suffix types with descriptive names: `Entry`, `State`, `Snapshot`
+
+### Functions
+- Use verb-noun pattern: `loadFromStorage`, `buildQueue`, `sortAndTrim`
+- Use descriptive verbs: `handleSubmit`, `startGame`
+
+## Code Organization
+
+### Imports
+- Group imports: SvelteKit imports, then Svelte imports, then lib imports
+- Sort imports alphabetically within groups
+- Use type imports: `import { type GameState } from '...'`
+
+### Function Structure
+- Keep functions focused and single-purpose
+- Extract complex logic into separate functions
+- Use early returns for guard clauses
+
+### Component Structure
+```svelte
+<script lang="ts">
+	// 1. Imports
+	// 2. Type definitions
+	// 3. State ($state)
+	// 4. Derived values ($derived)
+	// 5. Effects ($effect)
+	// 6. Functions
+</script>
+
+<svelte:head>
+	<!-- Meta tags -->
+</svelte:head>
+
+<!-- Template -->
+```
+
+## Comments
+- Avoid unnecessary comments
+- Use comments only for complex logic that needs explanation
+- Prefer self-documenting code
+- No AI-generated comment slop
+
+## Validation
+- Validate data from external sources (localStorage, APIs)
+- Use type guards for runtime validation
+- Return safe defaults on validation failure
+- Never trust data from storage without validation

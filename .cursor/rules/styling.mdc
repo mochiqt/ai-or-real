@@ -1,0 +1,42 @@
+# Styling Conventions
+
+## CSS Framework
+- Use **Tailwind CSS 4** via `@tailwindcss/vite`
+- Import Tailwind in `src/app.css`: `@import 'tailwindcss';`
+- Prettier automatically sorts Tailwind classes
+
+## CSS Architecture
+
+### Custom CSS Classes
+- Define custom classes in `src/app.css`
+- Use semantic class names: `.hero`, `.scoreboard`, `.game-wrapper`
+- Use utility classes for common patterns: `.primary`, `.secondary`
+
+### Color Scheme
+- Dark theme with light accents
+- Use rgba colors for transparency
+- Primary color: `#38bdf8` (cyan)
+- Secondary color: `#6366f1` (indigo)
+- Background: `#0f172a` (slate-900)
+- Text: `#e2e8f0` (slate-200)
+
+### Styling Patterns
+- Use backdrop-filter for glassmorphism effects
+- Use linear gradients for buttons and highlights
+- Use border-radius consistently (12px, 16px, 18px, 999px for pills)
+- Use box-shadow for depth
+
+### Responsive Design
+- Use CSS media queries for mobile breakpoints
+- Mobile-first approach when possible
+- Max-width: 960px for main content
+
+### Component Classes
+- Prefix component-specific classes: `.game-wrapper`, `.result-wrapper`
+- Use BEM-like naming for modifiers: `.feedback.correct`, `.feedback.wrong`
+
+## Accessibility
+- Use semantic HTML elements
+- Provide alt text for images
+- Use proper heading hierarchy
+- Ensure sufficient color contrast

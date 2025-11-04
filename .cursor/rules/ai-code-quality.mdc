@@ -1,0 +1,43 @@
+# AI Code Quality Standards
+
+## Avoid AI Code Slop
+
+### Type Casts
+- **Never use `as any`** - use proper type guards instead
+- **Never use unsafe type casts** like `as Type` without validation
+- Use type guards to validate before casting
+
+### Defensive Checks
+- Don't add unnecessary try/catch blocks in trusted code paths
+- Don't add defensive checks that are abnormal for the codebase
+- Trust validated data once it's been validated
+
+### Comments
+- Avoid unnecessary comments that explain obvious code
+- Don't add comments that are inconsistent with the file style
+- Prefer self-documenting code over comments
+- Remove AI-generated comment slop
+
+### Async/Await
+- Don't mark functions as `async` unless they actually `await` something
+- Remove unnecessary `async/await` from simple functions
+- Prefer synchronous code when possible
+
+### Code Style
+- Follow existing code style in the file
+- Don't mix different patterns within the same file
+- Keep consistency with the rest of the codebase
+- Match the indentation and formatting style
+
+## Code Review Checklist
+
+Before submitting code, ensure:
+- ✅ No `as any` type casts
+- ✅ No unnecessary try/catch blocks
+- ✅ No unnecessary comments
+- ✅ No unnecessary async/await
+- ✅ Consistent code style
+- ✅ Proper type guards for validation
+- ✅ All Svelte syntax validated with MCP Svelte
+- ✅ All TypeScript types are correct
+- ✅ Code follows project patterns

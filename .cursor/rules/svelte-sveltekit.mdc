@@ -1,0 +1,108 @@
+# Svelte & SvelteKit Conventions
+
+## Framework Version
+- Use **Svelte 5** with runes syntax (`$state`, `$derived`, `$effect`, `$props`)
+- Use **SvelteKit 2.x** for routing and server-side features
+- Always use MCP Svelte for syntax validation when writing Svelte code
+
+## Svelte 5 Runes
+
+### State Management
+- Use `$state()` for reactive component state instead of `let`
+- Use `$derived()` for computed values instead of `$:`
+- Use `$effect()` for side effects instead of `$:`
+- Use `$props()` for component props instead of `export let`
+
+Example:
+```typescript
+let count = $state(0);
+let doubled = $derived(count * 2);
+$effect(() => {
+	console.log(count);
+});
+```
+
+### Event Handlers
+- Use `onclick` instead of deprecated `on:click`
+- Use `oninput` instead of `on:input`
+- Apply this pattern to all event handlers
+
+### Each Blocks
+- Always include a key in `{#each}` blocks for proper reactivity
+- Use index or unique identifier: `{#each items as item, index (index)}`
+
+### Component Structure
+- Script tag first: `<script lang="ts">`
+- Then `<svelte:head>` for meta tags
+- Finally markup/template
+- Use TypeScript (`lang="ts"`) for all script tags
+
+## Store Pattern
+
+### Custom Store Objects
+- Create custom store objects that expose `subscribe` and methods
+- Use `writable` from `svelte/store` as the base
+- Use `get()` from `svelte/store` to read current value without subscribing
+
+Example:
+```typescript
+const store = writable<State>(initialState());
+
+const customStore = {
+	subscribe: store.subscribe,
+	method() {
+		store.update((state) => { /* ... */ });
+	}
+};
+
+export const myStore = customStore;
+```
+
+### Browser Checks
+- Always check `browser` from `$app/environment` before accessing localStorage/sessionStorage
+- Use early returns: `if (!browser) return defaultValue;`
+
+## Storage Pattern
+
+### localStorage/sessionStorage
+- Use type guards for validation when loading from storage
+- Handle JSON.parse errors with try/catch
+- Return safe defaults on error
+- Store keys should use project prefix: `'project-name:key'`
+
+Example:
+```typescript
+const loadFromStorage = (): State => {
+	if (!browser) return initialState();
+	const raw = localStorage.getItem(STORAGE_KEY);
+	if (!raw) return initialState();
+	
+	try {
+		const parsed = JSON.parse(raw);
+		// Validate with type guards
+		return isValid(parsed) ? parsed : initialState();
+	} catch (error) {
+		console.warn('Failed to load:', error);
+		return initialState();
+	}
+};
+```
+
+## File Organization
+
+### Routes
+- Use SvelteKit file-based routing
+- Page components: `+page.svelte`
+- Layout components: `+layout.svelte`
+- Keep route components focused on presentation
+
+### Lib Directory
+- Store modules in `src/lib/stores/`
+- Data modules in `src/lib/data/`
+- Shared utilities in `src/lib/`
+- Use `$lib` alias for imports
+
+### Assets
+- Images in `src/lib/assets/`
+- Static files in `static/`
+- Use Vite's `import.meta.glob` for dynamic asset imports

@@ -1,0 +1,48 @@
+# Development Workflow
+
+## Package Manager
+- **Always use `pnpm`** - never use npm, yarn, or bun for package management
+- Install dependencies: `pnpm install`
+- Run scripts: `pnpm dev`, `pnpm build`, etc.
+
+## Development Server
+- Dev server runs continuously during development
+- **Never start a new `pnpm run dev` process** - check if one is already running
+- Use the existing dev server if available
+
+## Working Directory
+- Project opens in correct root directory in Cursor
+- **Never use `cd`** to project root - only cd into subdirectories when necessary
+- Current working directory is always `/Users/mochiqt/Repos/ai-or-real`
+
+## Git Commands
+- **Never use git stash, git add, or git commit** unless explicitly requested
+- Only use git commands when the task specifically requires them
+- Do not proactively suggest git operations
+
+## Code Quality
+
+### Linting
+- Run `pnpm lint` to check code quality
+- ESLint configuration in `eslint.config.js`
+- Fix issues before committing
+
+### Type Checking
+- Run `pnpm check` for TypeScript type checking
+- Use `pnpm check:watch` for continuous type checking
+- Fix all type errors before committing
+
+### Svelte Validation
+- Always use MCP Svelte for syntax validation when writing Svelte code
+- Check syntax after making changes to Svelte components
+- Fix all Svelte 5 syntax issues
+
+## Testing
+- Test components manually in dev server
+- Verify localStorage/sessionStorage persistence
+- Test responsive design on mobile breakpoints
+
+## Build
+- Run `pnpm build` to create production build
+- Test production build with `pnpm preview`
+- Ensure no build errors or warnings
