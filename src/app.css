@@ -24,7 +24,7 @@ a {
 }
 
 button {
-	@apply font-inherit cursor-pointer transition-all duration-200;
+	@reference font-inherit cursor-pointer transition-all duration-200;
 }
 
 code {
@@ -91,7 +91,7 @@ code {
 
 /* Scoreboard */
 .scoreboard {
-	@apply animate-fade-in space-y-4 rounded-2xl border border-slate-700/50 bg-slate-800/40 p-8 backdrop-blur-xl;
+	@reference animate-fade-in space-y-4 rounded-2xl border border-slate-700/50 bg-slate-800/40 p-8 backdrop-blur-xl;
 	@apply shadow-2xl;
 }
 
@@ -160,7 +160,7 @@ code {
 
 /* Image card */
 .image-card {
-	@apply animate-fade-in overflow-hidden rounded-3xl border border-slate-600/40 bg-slate-800/50 shadow-2xl;
+	@reference animate-fade-in overflow-hidden rounded-3xl border border-slate-600/40 bg-slate-800/50 shadow-2xl;
 }
 
 .image-card img {
