@@ -38,6 +38,8 @@
 			<h1>AI or Real?</h1>
 			<p class="lead text-lg sm:text-xl mb-16">
 				Kannst du echte Fotos von KI-generierten Bildern unterscheiden?
+				<br />
+				<span class="text-sm text-slate-400 mt-2 block">⏱️ Zeitlimit: 60 Sekunden</span>
 			</p>
 			
 			<div class="flex justify-center mt-8 sm:mt-10">

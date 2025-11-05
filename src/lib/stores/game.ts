@@ -18,6 +18,9 @@ export type GameState = {
 	answers: Answer[];
 	startedAt?: string;
 	finishedAt?: string;
+	timeLimit?: number; // in seconds
+	endTime?: string; // ISO timestamp when game should end
+	timedOut?: boolean; // true if game ended due to time limit
 };
 
 const STORAGE_KEY = 'ai-or-real:game';
@@ -78,7 +81,10 @@ const loadFromStorage = (): GameState => {
 			score: typeof parsed.score === 'number' ? parsed.score : 0,
 			answers,
 			startedAt: parsed.startedAt,
-			finishedAt: parsed.finishedAt
+			finishedAt: parsed.finishedAt,
+			timeLimit: typeof parsed.timeLimit === 'number' ? parsed.timeLimit : undefined,
+			endTime: typeof parsed.endTime === 'string' ? parsed.endTime : undefined,
+			timedOut: typeof parsed.timedOut === 'boolean' ? parsed.timedOut : undefined
 		};
 	} catch (error) {
 		console.warn('Konnte Spielstand nicht laden:', error);
@@ -115,8 +121,12 @@ const buildQueue = (rounds?: number): ImageEntry[] => {
 
 const gameStore = {
 	subscribe: store.subscribe,
-	start(rounds?: number) {
+	start(rounds?: number, timeLimit?: number) {
 		const queue = buildQueue(rounds);
+		const now = new Date();
+		const limit = timeLimit ?? 60; // Default 60 seconds
+		const endTime = new Date(now.getTime() + limit * 1000);
+		
 		store.set({
 			status: 'active',
 			queue,
@@ -124,8 +134,10 @@ const gameStore = {
 			totalRounds: queue.length,
 			score: 0,
 			answers: [],
-			startedAt: new Date().toISOString(),
-			finishedAt: undefined
+			startedAt: now.toISOString(),
+			finishedAt: undefined,
+			timeLimit: limit,
+			endTime: endTime.toISOString()
 		});
 	},
 	guess(choice: ImageLabel) {
@@ -156,6 +168,17 @@ const gameStore = {
 				currentIndex: finished ? state.currentIndex : nextIndex,
 				status: finished ? 'finished' : 'active',
 				finishedAt: finished ? new Date().toISOString() : state.finishedAt
+			};
+		});
+	},
+	endGame(timedOut: boolean = false) {
+		store.update((state) => {
+			if (state.status !== 'active') return state;
+			return {
+				...state,
+				status: 'finished',
+				finishedAt: new Date().toISOString(),
+				timedOut
 			};
 		});
 	},

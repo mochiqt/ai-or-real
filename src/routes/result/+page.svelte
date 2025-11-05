@@ -6,7 +6,7 @@
 	import { onMount } from 'svelte';
 	type ResultSnapshot = Pick<
 		GameState,
-		'score' | 'totalRounds' | 'answers' | 'startedAt' | 'finishedAt'
+		'score' | 'totalRounds' | 'answers' | 'startedAt' | 'finishedAt' | 'timedOut'
 	> & {
 		accuracy: number;
 		durationMs?: number;
@@ -34,7 +34,8 @@
 			startedAt: $game.startedAt,
 			finishedAt: $game.finishedAt,
 			accuracy: $game.totalRounds ? $game.score / $game.totalRounds : 0,
-			durationMs: started && finished ? finished - started : undefined
+			durationMs: started && finished ? finished - started : undefined,
+			timedOut: $game.timedOut ?? false
 		};
 
 		canSubmit = highscores.canEnter($game.score);
@@ -85,6 +86,14 @@
 		<div class="grid grid-cols-1 lg:grid-cols-2 gap-10 xl:gap-14 items-start w-full">
 			<!-- LEFT: Stats + Highscore -->
 			<div class="space-y-6">
+				<!-- Timeout Message -->
+				{#if snapshot.timedOut}
+					<div class="rounded-2xl border border-red-500/40 bg-red-500/10 p-4 text-center animate-fade-in">
+						<p class="text-red-300 font-semibold">⏱️ Zeit abgelaufen!</p>
+						<p class="text-sm text-red-400/80 mt-1">Das Spiel wurde automatisch beendet.</p>
+					</div>
+				{/if}
+
 				<!-- Stats -->
 				<div class="mt-0 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
 					<div class="rounded-2xl border border-slate-600/40 bg-slate-800/50 p-4 text-center">

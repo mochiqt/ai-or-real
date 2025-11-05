@@ -5,6 +5,7 @@
 	import { game } from '$lib/stores/game';
 
 	let redirecting = $state(false);
+	let timeRemaining = $state(0);
 
 	onMount(() => {
 		if ($game.status !== 'active') {
@@ -17,6 +18,30 @@
 			redirecting = true;
 			goto('/result');
 		}
+	});
+
+	// Timer logic
+	$effect(() => {
+		if (!browser || $game.status !== 'active' || !$game.endTime) return;
+
+		const updateTimer = () => {
+			const now = new Date().getTime();
+			const end = new Date($game.endTime!).getTime();
+			const remaining = Math.max(0, Math.floor((end - now) / 1000));
+			
+			timeRemaining = remaining;
+
+			if (remaining <= 0 && $game.status === 'active') {
+				game.endGame(true);
+			}
+		};
+
+		updateTimer();
+		const interval = setInterval(updateTimer, 100);
+
+		return () => {
+			clearInterval(interval);
+		};
 	});
 
 	const handleGuess = (choice: 'real' | 'ai') => {
@@ -42,6 +67,12 @@
 			feedbackEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 		}
 	});
+
+	const formatTime = (seconds: number) => {
+		const mins = Math.floor(seconds / 60);
+		const secs = seconds % 60;
+		return `${mins}:${secs.toString().padStart(2, '0')}`;
+	};
 </script>
 
 <svelte:head>
@@ -63,6 +94,24 @@
 			<span class="font-bold text-lg">{$game.score}</span>
 		</div>
 	</div>
+
+	<!-- Timer -->
+	{#if $game.status === 'active' && $game.timeLimit}
+		<div class="mt-2 mb-2">
+			<div class="flex items-center justify-between text-sm mb-1">
+				<span class="text-slate-400">⏱️ Zeit verbleibend:</span>
+				<span class={['font-bold', timeRemaining <= 10 ? 'text-red-400' : 'text-cyan-400']}>
+					{formatTime(timeRemaining)}
+				</span>
+			</div>
+			<div class="progress">
+				<div 
+					class="bar" 
+					style={'width: ' + Math.max(0, Math.min(100, (timeRemaining / ($game.timeLimit || 60)) * 100)) + '%'}
+				></div>
+			</div>
+		</div>
+	{/if}
 
 	<!-- Progress Bar -->
 	<div class="space-y-2">
