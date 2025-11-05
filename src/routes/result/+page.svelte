@@ -113,9 +113,11 @@
 					<div class="highscore-form animate-fade-in">
 						<h2 class="text-2xl font-bold text-white">🏆 In die Bestenliste eintragen</h2>
 						<p class="text-sm text-slate-400">Du schaffst es in die Top 5!</p>
-						<label for="player-name" class="block text-sm font-semibold text-slate-300">Dein Name</label>
-						<input id="player-name" type="text" placeholder="Gib deinen Namen ein..." bind:value={name} maxlength="24" class="text-black" />
-						<button class="primary w-full" onclick={handleSubmit} disabled={name.trim().length === 0}>✨ Eintragen</button>
+						<form onsubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
+							<label for="player-name" class="block text-sm font-semibold text-slate-300">Dein Name</label>
+							<input id="player-name" type="text" placeholder="Gib deinen Namen ein..." bind:value={name} maxlength="24" class="text-black" />
+							<button type="submit" class="primary w-full mt-4" disabled={name.trim().length === 0}>✨ Eintragen</button>
+						</form>
 					</div>
 				{:else if submitted}
 					<div class="rounded-2xl border border-cyan-500/40 bg-cyan-500/10 p-6 text-center animate-fade-in">
